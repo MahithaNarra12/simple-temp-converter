@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .radio-group {
+            margin-bottom: 20px;
+        }
+
+        .radio-group label {
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Temperature Converter</h1>
+
+        <!-- Input field for temperature -->
+        <input type="number" id="inputTemp" placeholder="Enter temperature" required>
+
+        <!-- Radio buttons for selecting units -->
+        <div class="radio-group">
+            <label>
+                <input type="radio" name="unit" id="celsius" value="Celsius"> Celsius
+            </label>
+            <label>
+                <input type="radio" name="unit" id="fahrenheit" value="Fahrenheit"> Fahrenheit
+            </label>
+            <label>
+                <input type="radio" name="unit" id="kelvin" value="Kelvin"> Kelvin
+            </label>
+        </div>
+
+        <!-- Convert button -->
+        <button onclick="convertTemperature()">Convert</button>
+
+        <!-- Display the result -->
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function convertTemperature() {
+            // Get the input temperature and unit
+            const inputTemp = parseFloat(document.getElementById('inputTemp').value);
+            const unit = document.querySelector('input[name="unit"]:checked');
+
+            // Validate if the input is a number and if a unit is selected
+            if (isNaN(inputTemp)) {
+                document.getElementById('result').innerHTML = '<span class="error">Please enter a valid number.</span>';
+                return;
+            }
+
+            if (!unit) {
+                document.getElementById('result').innerHTML = '<span class="error">Please select a unit (Celsius, Fahrenheit, or Kelvin).</span>';
+                return;
+            }
+
+            // Convert temperature based on selected unit
+            let result;
+            const temp = inputTemp;
+            const selectedUnit = unit.value;
+
+            if (selectedUnit === 'Celsius') {
+                // Convert from Celsius to Fahrenheit and Kelvin
+                result = `
+                    <p>${temp}°C = ${(temp * 9/5) + 32}°F</p>
+                    <p>${temp}°C = ${temp + 273.15}K</p>
+                `;
+            } else if (selectedUnit === 'Fahrenheit') {
+                // Convert from Fahrenheit to Celsius and Kelvin
+                result = `
+                    <p>${temp}°F = ${(temp - 32) * 5/9}°C</p>
+                    <p>${temp}°F = ${((temp - 32) * 5/9) + 273.15}K</p>
+                `;
+            } else if (selectedUnit === 'Kelvin') {
+                // Convert from Kelvin to Celsius and Fahrenheit
+                result = `
+                    <p>${temp}K = ${temp - 273.15}°C</p>
+                    <p>${temp}K = ${((temp - 273.15) * 9/5) + 32}°F</p>
+                `;
+            }
+
+            // Display the result
+            document.getElementById('result').innerHTML = result;
+        }
+    </script>
+
+</body>
+</html>
